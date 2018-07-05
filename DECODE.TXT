@@ -1,0 +1,8 @@
+select 
+  DECODE(rownum, 1, '', ' UNION ALL ') || 
+  'SELECT ''' || table_name || ''' AS TABLE_NAME, COUNT(*) ' ||
+  ' FROM ' || table_name  as query_string 
+ from all_tables 
+Where table_name like 'OMEGA_LAND_R%'
+and table_name not like 'OMEGA_LAND_R%_R%'
+and table_name not like 'OMEGA_LAND_R%_B%'

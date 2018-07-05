@@ -1,0 +1,7 @@
+-- Count total number of distinct values
+
+SELECT COUNT(DISTINCT table_name) AS some_alias FROM user_tables
+
+-- List all distinct values and how many occurences they have
+
+select distinct table_name, count(table_name) as CountOf from user_tables group by table_name

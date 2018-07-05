@@ -1,0 +1,19 @@
+USE BGWorkManagement
+
+SELECT UtilitiesDepotArea
+FROM tblBGAJobWALocation_Rpt
+
+JOIN tblBGAJobInstanceAttachments
+ON tblBGAJobInstanceAttachments.JobInstanceAttachmentID = tblBGAJobWALocation_Rpt.JobInstanceAttachmentID
+
+JOIN tblBGAJobInstance
+ON tblBGAJobInstance.JobInstanceID = tblBGAJobInstanceAttachments.JobInstanceID
+
+JOIN tblBGAJob
+ON tblBGAJob.JobID = tblBGAJobInstance.JobID
+
+WHERE tblBGAJob.JobID = '20006392'
+
+
+
+

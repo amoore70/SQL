@@ -1,0 +1,21 @@
+
+SELECT	 DISTINCT
+		 J.JobId AS JobReference
+		,'COMPLETE' AS JobStatus
+		,JS.CreatedOn AS JobStatusDate
+		,J.ClickDistrictDesc AS SubArea
+		,JC.StreetworksNoticeType
+  FROM	[BGWorkManagement].[dbo].tblBGAJob J WITH (NOLOCK) 
+  JOIN	[BGWorkManagement].[dbo].tblBGAJobCard JC WITH (NOLOCK) ON JC.JobId = J.JobId
+  JOIN	[BGWorkManagement].[dbo].tblBGAJobStatusHistory JS WITH (NOLOCK)  ON JS.JobID = J.JobId
+		AND JS.TransactionId = (SELECT	MAX(JS1.TransactionId) 
+								  FROM	[BGWorkManagement].[dbo].tblBGAJobStatusHistory JS1  WITH (NOLOCK) 
+								  JOIN	[BGWorkManagement].[dbo].tblBGAJobStatus JST WITH (NOLOCK) ON JST.StatusID = JS1.StatusID
+								 WHERE	JS1.JobId = J.JobId 
+										AND 
+										JST.StatusName = 'COMPLETE')		
+  WHERE	JS.CreatedOn > '01 Sep 2017'
+		AND
+		ISNULL(JC.StreetworksNoticeType, 'None') <> 'None'
+		AND
+		J.BusinessAreaCode LIKE 'UT%' 

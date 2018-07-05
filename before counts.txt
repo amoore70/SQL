@@ -1,0 +1,14 @@
+
+use wamincidentstaging
+SELECT count(*)  as 'jobcreations'from [jobcreations]
+SELECT count(*) as 'bulkinspectionjobcreation' from [jobcreations_bulkinspectionjobcreation]
+SELECT count(*) as 'followonjobcreation' from [jobcreations_followonjobcreation]
+SELECT count(*) as 'inspectionjobcreation' from [jobcreations_inspectionjobcreation]
+
+use wamjobstaging
+SELECT count(*)  as 'jobcreations'from [jobcreations]
+SELECT count(*) as 'in flight job' from [jobcreations_inflightjob]
+SELECT count(*) as 'open job' from [jobcreations_openjob]
+
+
+

@@ -1,0 +1,13 @@
+create or replace PROCEDURE update_life_assured
+
+Begin 
+
+delete from C_LIF_LIFE_ASSURED 
+where start_date <> to_date('01/01/1980', 'dd/mm/yyyy'); 
+-- Close all seed records that have been left open 
+update C_LIF_LIFE_ASSURED 
+set end_date = to_date('31/12/4712', 'dd/mm/yyyy'); 
+
+commit; 
+
+end;

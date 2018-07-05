@@ -1,0 +1,63 @@
+use WamIncidentStaging
+declare @date NCHAR (23) 
+SET @date = '2016-01-10 00:00:00.000'
+
+/****** Number of open incidents  ******/
+SELECT count(*) as 'Open Incidents'
+  FROM [WamIncidentStaging].[dbo].[tblOpsIncidentMasterS]
+  where [duedate] > @date
+  and completed = 'N'
+
+/****** Number of job types  ******/
+SELECT count (distinct jobtype) as 'Distinct Jobtypes'
+  FROM [WamIncidentStaging].[dbo].[tblOpsIncidentMasterS]
+  where [duedate] > @date
+  and completed = 'N'
+
+/****** Inspection Incidents  ******/
+SELECT count (*) as 'Incident Inspections'
+  FROM [dbo].[tblOpsIncidentMasters], [dbo].[Incidents_InspectionIncident]
+  where [dbo].[Incidents_InspectionIncident]. RapidReference = 
+  [dbo].[tblOpsIncidentMasters].RapidReference
+  and ([tblOpsIncidentMasters].Completed = 'N' and [duedate] > @date)
+
+/****** Bulk Jobs ******/
+SELECT count (*) as 'Bulk Jobs'
+  FROM [dbo].[Incidents_BulkIncident], [dbo].[tblOpsIncidentMasters]
+  where [dbo].[Incidents_BulkIncident]. RapidReference = 
+  [dbo].[tblOpsIncidentMasters].RapidReference
+  and ([tblOpsIncidentMasters].Completed = 'N' and [duedate] > @date)
+
+/****** Flagged Incidents ******/
+SELECT count (*) as 'Flagged Incidents'
+  FROM [dbo].[tblOpsIncidentMasters], [dbo].[FlaggedIncidents]
+  where [dbo].[FlaggedIncidents]. RapidReference = 
+  [dbo].[tblOpsIncidentMasters].RapidReference
+  and ([tblOpsIncidentMasters].Completed = 'N' and [duedate] > @date)
+
+/****** Follow On Incidents  ******/
+SELECT count (*) as 'Follow On Incidents'
+  FROM [dbo].[tblOpsIncidentMasters], [dbo].[Incidents_FollowOnIncident]
+  where [dbo].[Incidents_FollowOnIncident]. RapidReference = 
+  [dbo].[tblOpsIncidentMasters].RapidReference
+  and ([tblOpsIncidentMasters].Completed = 'N' and [duedate] > @date)
+
+  /****** Number of job sources - there are 18  ******/
+SELECT count (distinct jobsource) as 'Distinct Jobtypes'
+  FROM [WamIncidentStaging].[dbo].[tblOpsIncidentMasterS]
+  where [duedate] > @date
+  and completed = 'N'
+
+    /****** Number of job priorities - there are 22  ******/
+SELECT count (distinct jobpriority) as 'Distinct Job Priority'
+  FROM [WamIncidentStaging].[dbo].[tblOpsIncidentMasterS]
+  where [duedate] > @date
+  and completed = 'N'
+
+/****** Jobtype numbers  ******/
+SELECT [jobtype], count(*)
+  FROM [WamIncidentStaging].[dbo].[tblOpsIncidentMasterS]
+  where [duedate] > @date
+  and completed = 'N'
+  group by [jobtype]
+
